@@ -1,6 +1,10 @@
 pipeline{
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     parameters {
         booleanParam(name: "RunTests", defaultValue: true, description: "Sollen Tests ausgeführt werden?")
     }
