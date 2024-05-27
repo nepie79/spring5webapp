@@ -1,6 +1,10 @@
 pipeline{
     agent any
 
+    environment {
+        ansible_pw = credentials('ansible-vault-pw-file')
+    }
+
     options {
         skipDefaultCheckout(true)
     }
@@ -20,7 +24,7 @@ pipeline{
             steps{
                 echo "Building ..."
                 dir('ansible') {
-                    sh 'ansible-playbook playbook.yml -i inventory/ -vvvv --vault-password-file vault-passwd.txt'
+                    sh 'ansible-playbook playbook.yml -i inventory/ -vvvv --vault-password-file $ansible_pw'
                 }
             }
             
