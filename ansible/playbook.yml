@@ -1,0 +1,5 @@
+---
+- name: Copy Template to target with vault
+  hosts: target1
+  roles:
+    - copyTemplate
