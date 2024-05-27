@@ -2,7 +2,7 @@ pipeline{
     agent any
 
     environment {
-        ansible_pw = credentials('ansible-vault-pw-file')
+        ansible_pw = credentials('ansible-vault-pw-text')
     }
 
     options {
