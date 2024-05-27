@@ -19,7 +19,9 @@ pipeline{
         stage('Build'){
             steps{
                 echo "Building ..."
-                sh 'ansible --version'
+                dir('ansible') {
+                    sh 'ansible-playbook playbook.yml -i inventory/ -vvvv --vault-password-file vault-passwd.txt'
+                }
             }
             
         }
