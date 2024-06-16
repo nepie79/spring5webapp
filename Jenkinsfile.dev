@@ -23,6 +23,15 @@ pipeline{
         stage('Build'){
             steps{
                 echo "Building ..."
+                script {
+                    sshagent([ansible-controller]) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no osboxes@192.168.178.124 << EOF
+                        echo 'Running command on remote host'
+                        pwd
+                        EOF
+                        """
+                }
                 dir('ansible') {
                     sh 'ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${ansible_pw}'
                 }
