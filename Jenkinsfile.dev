@@ -29,6 +29,7 @@ pipeline{
                         ssh -o StrictHostKeyChecking=no osboxes@192.168.178.124 << EOF
                         echo 'Running command on remote host'
                         pwd
+                        mkdir folderByJenkins
                         EOF
                         """
                     }
