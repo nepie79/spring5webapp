@@ -31,6 +31,7 @@ pipeline{
                         pwd
                         EOF
                         """
+                    }
                 }
                 dir('ansible') {
                     sh 'ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${ansible_pw}'
