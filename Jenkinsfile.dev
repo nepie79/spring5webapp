@@ -24,7 +24,7 @@ pipeline{
             steps{
                 echo "Building ..."
                 script {
-                    sshagent([ansible-controller]) {
+                    sshagent([ansible_controller]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no osboxes@192.168.178.124 << EOF
                         echo 'Running command on remote host'
