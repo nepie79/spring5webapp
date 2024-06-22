@@ -44,7 +44,7 @@ pipeline{
                 script {
                     sshagent(['ansible_controller']) {
                         sh """
-                        scp -o StrictHostKeyChecking=no ansible/playbook.yml osboxes@$192.168.178.124:jenkinsAnsible/
+                        scp -o StrictHostKeyChecking=no ansible/playbook.yml osboxes@192.168.178.124:jenkinsAnsible/
                         """
                     }
                 }
