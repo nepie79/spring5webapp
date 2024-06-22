@@ -50,6 +50,23 @@ pipeline{
                 }
             }
         }
+        stage('Run playbook'){
+            steps{
+                echo "Building ..."
+                script {
+                    sshagent(['ansible_controller']) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no osboxes@192.168.178.124 << EOF
+                        cd jenkinsAnsible/ansible && ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file vault-passwd.txt
+                        """
+                    }
+                }
+               // dir('ansible') {
+               //     sh 'ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${ansible_pw}'
+               // }
+            }
+            
+        }
         stage('Test'){
             when { expression { return params.RunTests } }
             steps{
