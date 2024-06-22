@@ -33,11 +33,22 @@ pipeline{
                         """
                     }
                 }
-                dir('ansible') {
-                    sh 'ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${ansible_pw}'
-                }
+               // dir('ansible') {
+               //     sh 'ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${ansible_pw}'
+               // }
             }
             
+        }
+        stage('Copy Files to Remote Host') {
+            steps {
+                script {
+                    sshagent(['ansible_controller']) {
+                        sh """
+                        scp -o StrictHostKeyChecking=no ansible/playbook.yml osboxes@$192.168.178.124:jenkinsAnsible/
+                        """
+                    }
+                }
+            }
         }
         stage('Test'){
             when { expression { return params.RunTests } }
