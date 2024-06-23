@@ -84,7 +84,7 @@ pipeline{
                 sshagent(['ansible_controller']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
-                    rm -f /home/osboxes/jenkinsAnsible/vault-passwd.txt
+                    rm -f /home/osboxes/jenkinsAnsible/ansible/vault-passwd.txt
                     """
                 }
             }
