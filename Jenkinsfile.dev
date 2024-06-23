@@ -77,4 +77,19 @@ pipeline{
             
         }
     }
+    post {
+        always {
+            script {
+                // Ensure the vault file is deleted after the playbook run
+                sshagent([ansible_controller]) {
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
+                    rm -f jenkinsAnsible/vault-passwd.txt
+                    EOF
+                    """
+                }
+            }
+            echo 'Pipeline finished'
+        }
+    }
 }
