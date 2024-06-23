@@ -64,7 +64,8 @@ pipeline{
                         scp ${VAULT_PW_FILE} ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/ansible/
                         rm -f ${VAULT_PW_FILE}
                         ssh ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
-                        cd jenkinsAnsible/ansible && ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${VAULT_PW_FILE}
+                        cd jenkinsAnsible/ansible 
+                        echo ${ansible_pw_text} | ansible-playbook playbook.yml -i inventory/ -vv --ask-vault-pass
                         """
                     }
                 }
