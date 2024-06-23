@@ -30,7 +30,7 @@ pipeline{
                 script {
                     sshagent(['ansible_controller']) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
+                        ssh ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
                         echo 'Running command on remote host'
                         pwd
                         ansible --version
