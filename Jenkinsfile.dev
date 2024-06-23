@@ -4,6 +4,7 @@ pipeline{
     environment {
         ansible_pw = credentials('ansible-vault-pw-file')
         ANSIBLE_NODE = "${ANSIBLE_HOST}"
+        ANSIBLE_U = "${ANSIBLE_USER}"
     }
 
     options {
@@ -27,7 +28,7 @@ pipeline{
                 script {
                     sshagent(['ansible_controller']) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no osboxes@${ANSIBLE_NODE} << EOF
+                        ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
                         echo 'Running command on remote host'
                         pwd
                         ansible --version
@@ -45,7 +46,7 @@ pipeline{
                 script {
                     sshagent(['ansible_controller']) {
                         sh """
-                        scp -o StrictHostKeyChecking=no -r ansible osboxes@${ANSIBLE_NODE}:jenkinsAnsible/
+                        scp -o StrictHostKeyChecking=no -r ansible ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/
                         """
                     }
                 }
@@ -57,7 +58,7 @@ pipeline{
                 script {
                     sshagent(['ansible_controller']) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no osboxes@${ANSIBLE_NODE} << EOF
+                        ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
                         cd jenkinsAnsible/ansible && ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file vault-passwd.txt
                         """
                     }
