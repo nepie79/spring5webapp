@@ -6,6 +6,7 @@ pipeline{
         ansible_pw_text = credentials('ansible-vault-pw-text')
         ANSIBLE_NODE = "${ANSIBLE_HOST}"
         ANSIBLE_U = "${ANSIBLE_USER}"
+        VAULT_PW_FILE = "vault_password_file"
     }
 
     options {
@@ -60,9 +61,9 @@ pipeline{
                     sshagent(['ansible_controller']) {
                         sh """
                         echo "${ansible_pw_text}" > vault_password_file
-                        scp -o StrictHostKeyChecking=no vault_password_file ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/ansible/
+                        scp -o StrictHostKeyChecking=no ${VAULT_PW_FILE} ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/ansible/
                         ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
-                        cd jenkinsAnsible/ansible && ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file vault-passwd.txt
+                        cd jenkinsAnsible/ansible && ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${VAULT_PW_FILE}
                         rm -f /home/osboxes/jenkinsAnsible/ansible/vault-passwd.txt
                         """
                     }
