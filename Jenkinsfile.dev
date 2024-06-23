@@ -48,7 +48,7 @@ pipeline{
                 script {
                     sshagent(['ansible_controller']) {
                         sh """
-                        scp -o StrictHostKeyChecking=no -r ansible ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/
+                        scp -r ansible ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/
                         """
                     }
                 }
@@ -61,9 +61,9 @@ pipeline{
                     sshagent(['ansible_controller']) {
                         sh """
                         echo "${ansible_pw_text}" > vault_password_file
-                        scp -o StrictHostKeyChecking=no ${VAULT_PW_FILE} ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/ansible/
+                        scp ${VAULT_PW_FILE} ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/ansible/
                         rm -f ${VAULT_PW_FILE}
-                        ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
+                        ssh ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
                         cd jenkinsAnsible/ansible && ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${VAULT_PW_FILE}
                         """
                     }
@@ -89,7 +89,7 @@ pipeline{
                 sshagent(['ansible_controller']) {
                     sh """
                     rm -f ${VAULT_PW_FILE}
-                    ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
+                    ssh ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
                     rm -f /home/osboxes/jenkinsAnsible/ansible/${VAULT_PW_FILE}
                     """
                 }
