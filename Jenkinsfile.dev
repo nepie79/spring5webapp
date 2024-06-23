@@ -85,7 +85,6 @@ pipeline{
                     sh """
                     ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
                     rm -f jenkinsAnsible/vault-passwd.txt
-                    EOF
                     """
                 }
             }
