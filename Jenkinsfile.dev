@@ -3,7 +3,7 @@ pipeline{
 
     environment {
         ansible_pw = credentials('ansible-vault-pw-file')
-        ANSIBLE_NODE = ${ANSIBLE_HOST}
+        ANSIBLE_NODE = "${ANSIBLE_HOST}"
     }
 
     options {
