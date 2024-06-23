@@ -62,9 +62,9 @@ pipeline{
                         sh """
                         echo "${ansible_pw_text}" > vault_password_file
                         scp -o StrictHostKeyChecking=no ${VAULT_PW_FILE} ${ANSIBLE_U}@${ANSIBLE_NODE}:jenkinsAnsible/ansible/
+                        rm -f ${VAULT_PW_FILE}
                         ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
                         cd jenkinsAnsible/ansible && ansible-playbook playbook.yml -i inventory/ -vv --vault-password-file ${VAULT_PW_FILE}
-                        rm -f /home/osboxes/jenkinsAnsible/ansible/vault-passwd.txt
                         """
                     }
                 }
@@ -88,8 +88,9 @@ pipeline{
                 // Ensure the vault file is deleted after the playbook run
                 sshagent(['ansible_controller']) {
                     sh """
+                    rm -f ${VAULT_PW_FILE}
                     ssh -o StrictHostKeyChecking=no ${ANSIBLE_U}@${ANSIBLE_NODE} << EOF
-                    rm -f /home/osboxes/jenkinsAnsible/ansible/vault-passwd.txt
+                    rm -f /home/osboxes/jenkinsAnsible/ansible/${VAULT_PW_FILE}
                     """
                 }
             }
